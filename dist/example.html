@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TR Inventory</title>
+  </head>
+  <body>
+    <script src="tr-inventory.js"></script>
+    <script>
+      // Firstly, you need to create a registry that describes every
+      // available item and combinations.
+      const registry = new TR.QuestItemRegistry()
+        // add some item types
+        .createDefinition('small key')
+        .createDefinition('rusty nail')
+        .createDefinition('wood stock')
+        .createDefinition('axe')
+        .createDefinition('block')
+        .createDefinition('big block')
+        // register the available combinations
+        .createCombination('rusty nail', 'wood stock', 'axe') // rusty nail + wood stock -> axe
+        .createCombination('block', 'block', 'big block'); // 2 x block -> big block
+
+      // Then, creates an inventory that use those items, and play with it
+      const inventory = new TR.Inventory(registry)
+        .addItem('rusty nail')
+        .addItem('wood stock')
+        .addItem('big block', 2) // addItem and removeItem take a 'count' parameter: creates 2 big blocks
+        .combine('rusty nail', 'wood stock') // creates one axe
+        .uncombine('big block') // creates 2 blocks
+        .removeItem('block'); // removes 1 block
+
+      inventory.forEachItem(i => console.log(i)); // big block x 1, axe x 1, block x 1
+    </script>
+    <h1>Check the console ;)</h1>
+  </body>
+</html>
